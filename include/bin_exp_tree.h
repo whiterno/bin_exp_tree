@@ -6,9 +6,29 @@
 #define INIT_DEBUG_VARS_BET(binExpTree) (*binExpTree)->name = name; (*binExpTree)->filename = filename; (*binExpTree)->funcname = funcname; (*binExpTree)->line = line;
 #define DUMP_BET(binExpTree) binExpTree, __FILE__, __func__, __LINE__
 
+enum DataType{
+    OPER,
+    VAR,
+    NUM,
+};
+
+enum Operations{
+    ADD,
+    SUB,
+    MULT,
+    DIV,
+};
+
+union NodeValue
+{
+    char variable;
+    double number;
+    Operations operation_type;
+};
+
 struct Node{
-    int type;
-    int value;
+    DataType type;
+    NodeValue value;
 
     Node* left;
     Node* right;
@@ -33,21 +53,8 @@ enum ErrorsBinExpTree{
     CYCLE_IN_TREE,
 };
 
-enum DataType{
-    OPER,
-    VAR,
-    NUM,
-};
-
-enum Operations{
-    ADD,
-    SUB,
-    MULT,
-    DIV,
-};
-
 int binExpTreeCtor(BinExpTree** tree INIT_ARGS_BET);
-Node* createNode(int data_type, int data_value, Node* left, Node* right);
+Node* createNode(Node* left, Node* right, int data_type, ...);
 int countNodes(Node* node, int* amount);
 int binExpTreeDtor(BinExpTree** tree);
 

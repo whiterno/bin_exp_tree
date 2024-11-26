@@ -120,7 +120,7 @@ static int printLabel(FILE* dump_dot, Node* node){
             break;
         }
         case(NUM):{
-            fprintf(dump_dot, "label = \"{%d ", node->value); break;
+            fprintf(dump_dot, "label = \"{%lg ", node->value.number); break;
         }
     }
 
@@ -128,7 +128,7 @@ static int printLabel(FILE* dump_dot, Node* node){
 }
 
 static int printOperLabel(FILE* dump_dot, Node* node){
-    switch(node->value){
+    switch(node->value.operation_type){
         case(ADD):{
             fprintf(dump_dot, "label = \"{ + "); break;
         }
@@ -147,7 +147,7 @@ static int printOperLabel(FILE* dump_dot, Node* node){
 }
 
 static int printVarLabel(FILE* dump_dot, Node* node){
-    if (node->value == 0){
+    if (node->value.number == 0){
         fprintf(dump_dot, "label = \"{ x ");
     }
 

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <assert.h>
 
 #include "../include/bin_exp_tree.h"
@@ -18,15 +19,31 @@ int binExpTreeCtor(BinExpTree** tree INIT_ARGS_BET){
     return NO_ERROR;
 }
 
-Node* createNode(int data_type, int data_value, Node* left, Node* right){
+Node* createNode(Node* left, Node* right, int data_type, ...){
+    va_list args;
+    va_start(args, data_type);
+
+    NodeValue data_value = {};
     Node* new_node = (Node*)calloc(1, sizeof(Node));
 
     new_node->left      = left;
     new_node->right     = right;
     new_node->parent    = NULL;
+    new_node->type      = (DataType)data_type;
 
-    new_node->type      = data_type;
-    new_node->value     = data_value;
+    if (data_type == NUM){
+        data_value.number       = va_arg(args, double);
+        new_node->value.number  = data_value.number;
+    }
+    if (data_type == VAR){
+        data_value.variable         = va_arg(args, int);
+        new_node->value.variable    = data_value.variable;
+    }
+    if (data_type == OPER){
+        data_value.operation_type       = (Operations)va_arg(args, int);
+        new_node->value.operation_type  = data_value.operation_type;
+    }
+    va_end(args);
 
     return new_node;
 }
