@@ -141,6 +141,21 @@ static int printOperLabel(FILE* dump_dot, Node* node){
         case(MULT):{
             fprintf(dump_dot, "label = \"{ * "); break;
         }
+        case(POW):{
+            fprintf(dump_dot, "label = \"{ ^ "); break;
+        }
+        case(SIN):{
+            fprintf(dump_dot, "label = \"{ sin "); break;
+        }
+        case(COS):{
+            fprintf(dump_dot, "label = \"{ cos "); break;
+        }
+        case(TAN):{
+            fprintf(dump_dot, "label = \"{ tan "); break;
+        }
+        case(COT):{
+            fprintf(dump_dot, "label = \"{ cot "); break;
+        }
     }
 
     return NO_ERROR;

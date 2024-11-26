@@ -17,6 +17,11 @@ enum Operations{
     SUB,
     MULT,
     DIV,
+    POW,
+    SIN,
+    COS,
+    TAN,
+    COT,
 };
 
 union NodeValue
