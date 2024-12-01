@@ -112,15 +112,16 @@ static int writeNode(FILE* dump_dot, Node* node, TreeDumpAttributes* attrs, int 
 static int printLabel(FILE* dump_dot, Node* node){
     switch(node->type){
         case(OPER):{
-            printOperLabel(dump_dot, node); break;
+            printOperLabel(dump_dot, node);
             break;
         }
         case(VAR):{
-            printVarLabel(dump_dot, node); break;
+            printVarLabel(dump_dot, node);
             break;
         }
         case(NUM):{
-            fprintf(dump_dot, "label = \"{%lg ", node->value.number); break;
+            fprintf(dump_dot, "label = \"{%lg ", node->value.number);
+            break;
         }
     }
 

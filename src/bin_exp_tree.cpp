@@ -5,6 +5,11 @@
 
 #include "../include/bin_exp_tree.h"
 
+static Node* createNodeIn(Node* left, Node* right, DataType data_type);
+static Node* createVarNode(Node* left, Node* right, char var);
+static Node* createNumNode(Node* left, Node* right, double num);
+static Node* createOperNode(Node* left, Node* right, Operations operation_type);
+
 static int nodesDtor(Node* node);
 
 int binExpTreeCtor(BinExpTree** tree INIT_ARGS_BET){
@@ -19,31 +24,48 @@ int binExpTreeCtor(BinExpTree** tree INIT_ARGS_BET){
     return NO_ERROR;
 }
 
-Node* createNode(Node* left, Node* right, int data_type, ...){
-    va_list args;
-    va_start(args, data_type);
+Node* createNode(Node* left, Node* right, DataType data_type, NodeValue value) {
+    if (data_type == OPER) {
+        return createOperNode(left, right, value.operation_type);
+    }
+    if (data_type == VAR){
+        return createVarNode(left, right, value.variable);
+    }
+    if (data_type == NUM){
+        return createNumNode(left, right, value.number);
+    }
 
-    NodeValue data_value = {};
+    return NULL;
+}
+
+static Node* createVarNode(Node* left, Node* right, char var){
+    Node* node = createNodeIn(left, right, VAR);
+    node->value.variable = var;
+
+    return node;
+}
+
+static Node* createNumNode(Node* left, Node* right, double num){
+    Node* node = createNodeIn(left, right, NUM);
+    node->value.number = num;
+
+    return node;
+}
+
+static Node* createOperNode(Node* left, Node* right, Operations operation_type){
+    Node* node = createNodeIn(left, right, OPER);
+    node->value.operation_type = operation_type;
+
+    return node;
+}
+
+static Node* createNodeIn(Node* left, Node* right, DataType data_type){
     Node* new_node = (Node*)calloc(1, sizeof(Node));
 
     new_node->left      = left;
     new_node->right     = right;
     new_node->parent    = NULL;
-    new_node->type      = (DataType)data_type;
-
-    if (data_type == NUM){
-        data_value.number       = va_arg(args, double);
-        new_node->value.number  = data_value.number;
-    }
-    if (data_type == VAR){
-        data_value.variable         = va_arg(args, int);
-        new_node->value.variable    = data_value.variable;
-    }
-    if (data_type == OPER){
-        data_value.operation_type       = (Operations)va_arg(args, int);
-        new_node->value.operation_type  = data_value.operation_type;
-    }
-    va_end(args);
+    new_node->type      = data_type;
 
     return new_node;
 }

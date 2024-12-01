@@ -24,8 +24,7 @@ enum Operations{
     COT,
 };
 
-union NodeValue
-{
+union NodeValue{
     char variable;
     double number;
     Operations operation_type;
@@ -59,7 +58,7 @@ enum ErrorsBinExpTree{
 };
 
 int binExpTreeCtor(BinExpTree** tree INIT_ARGS_BET);
-Node* createNode(Node* left, Node* right, int data_type, ...);
+Node* createNode(Node* left, Node* right, DataType data_type, NodeValue value);
 int countNodes(Node* node, int* amount);
 int binExpTreeDtor(BinExpTree** tree);
 

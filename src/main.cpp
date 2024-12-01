@@ -3,14 +3,14 @@
 #include "../include/bin_exp_tree.h"
 #include "../include/dump_bet.h"
 
-#define _ADD(left, right)   createNode(left, right, OPER, ADD)
-#define _SUB(left, right)   createNode(left, right, OPER, SUB)
-#define _DIV(left, right)   createNode(left, right, OPER, DIV)
-#define _MULT(left, right)  createNode(left, right, OPER, MULT)
+#define _ADD(left, right)   createNode(left, right, OPER, (NodeValue){.operation_type = ADD})
+#define _SUB(left, right)   createNode(left, right, OPER, (NodeValue){.operation_type = SUB})
+#define _DIV(left, right)   createNode(left, right, OPER, (NodeValue){.operation_type = DIV})
+#define _MULT(left, right)  createNode(left, right, OPER, (NodeValue){.operation_type = MULT})
 
-#define _NUM(value)         createNode(NULL, NULL, NUM, (double)value)
+#define _NUM(value)         createNode(NULL, NULL, NUM, (NodeValue){.number = value})
 
-#define _X                  createNode(NULL, NULL, VAR, 0)
+#define _X                  createNode(NULL, NULL, VAR, (NodeValue){.variable = 0})
 
 int main(){
     BinExpTree* tree = NULL;
