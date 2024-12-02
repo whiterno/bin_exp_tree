@@ -10,7 +10,7 @@
 
 #define _NUM(value)         createNode(NULL, NULL, NUM, (NodeValue){.number = value})
 
-#define _X                  createNode(NULL, NULL, VAR, (NodeValue){.variable = 0})
+#define _X                  createNode(NULL, NULL, VAR, (NodeValue){.variable = 'x'})
 
 int main(){
     BinExpTree* tree = NULL;

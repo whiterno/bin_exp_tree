@@ -16,8 +16,6 @@ static int writeEdge(FILE* dump_dot, TreeDumpAttributes* attrs, long long node, 
 
 static int printLabel(FILE* dump_dot, Node* node);
 static int printOperLabel(FILE* dump_dot, Node* node);
-static int printVarLabel(FILE* dump_dot, Node* node);
-
 
 int binExpTreeDump(BinExpTree* tree, const char filename[], const char funcname[], const size_t line, int error){
     if (tree == NULL || error == NULL_VALUE_INSERTED){
@@ -75,10 +73,12 @@ static int createNodesAndEdges(FILE* dump_dot, Node* node, TreeDumpAttributes* a
 
     writeNode(dump_dot, node, attrs);
     if (node->left){
+        fprintf(dump_dot, "\tnode_%lld: <fl%lld> -> node_%lld [", (long long)node, (long long)node, (long long)node->left);
         writeEdge(dump_dot, attrs, (long long)node->left, node, "");
         createNodesAndEdges(dump_dot, node->left, attrs);
     }
     if (node->right){
+        fprintf(dump_dot, "\tnode_%lld: <fr%lld> -> node_%lld [", (long long)node, (long long)node, (long long)node->right);
         writeEdge(dump_dot, attrs, (long long)node->right, node, "");
         createNodesAndEdges(dump_dot, node->right, attrs);
     }
@@ -109,7 +109,7 @@ static int printLabel(FILE* dump_dot, Node* node){
             break;
         }
         case(VAR):{
-            printVarLabel(dump_dot, node);
+            fprintf(dump_dot, "label = \"{%c ", node->value.variable);
             break;
         }
         case(NUM):{
@@ -155,20 +155,11 @@ static int printOperLabel(FILE* dump_dot, Node* node){
     return NO_ERROR;
 }
 
-static int printVarLabel(FILE* dump_dot, Node* node){
-    if (node->value.number == 0){
-        fprintf(dump_dot, "label = \"{ x ");
-    }
-
-    return NO_ERROR;
-}
-
 static int writeEdge(FILE* dump_dot, TreeDumpAttributes* attrs, long long node, Node* parent, const char label[]){
     assert(dump_dot);
     assert(attrs);
     assert(label);
 
-    fprintf(dump_dot, "\tnode_%lld: <fl%lld> -> node_%lld [", (long long)parent, (long long)parent, node);
     fprintf(dump_dot,  "color = \"%s\", ", attrs->edge_color);
     fprintf(dump_dot,  "arrowhead = \"%s\", ", attrs->edge_arrowhead);
     fprintf(dump_dot,  "label = \"%s\"]\n", label);
