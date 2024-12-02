@@ -6,13 +6,12 @@
 #include "../include/dump_bet.h"
 
 static int dump_img_counter = 0;
-static int node_counter = 0;
 static FILE* dump_html = fopen(DUMP_HTML_FILENAME, "w");
 
 static const char* enumToString(int error);
 static int createDotFile(Node* root);
 static int createNodesAndEdges(FILE* dump_dot, Node* node, TreeDumpAttributes* attrs);
-static int writeNode(FILE* dump_dot, Node* node, TreeDumpAttributes* attrs, int node_serial_number);
+static int writeNode(FILE* dump_dot, Node* node, TreeDumpAttributes* attrs);
 static int writeEdge(FILE* dump_dot, TreeDumpAttributes* attrs, int node_serial_number, const char label[]);
 
 static int printLabel(FILE* dump_dot, Node* node);
@@ -24,7 +23,6 @@ int binExpTreeDump(BinExpTree* tree, const char filename[], const char funcname[
     if (tree == NULL || error == NULL_VALUE_INSERTED){
         return NULL_VALUE_INSERTED;
     }
-    node_counter = tree->nodes_amount;
 
     createDotFile(tree->root);
 
@@ -36,7 +34,6 @@ int binExpTreeDump(BinExpTree* tree, const char filename[], const char funcname[
 
     fprintf(dump_html, "\n\tBinary Expression Tree[%p]{", tree);
     fprintf(dump_html, "\n\t\troot = %p", tree->root);
-    fprintf(dump_html, "\n\t\tnodes_amount = %d", tree->nodes_amount);
     fprintf(dump_html, "\n\t\t <img src = %d.png width = 50%%>", dump_img_counter - 1);
     fprintf(dump_html, "\n\n</pre>\n");
 
@@ -75,36 +72,32 @@ static int createNodesAndEdges(FILE* dump_dot, Node* node, TreeDumpAttributes* a
     if (node == NULL){
         return NO_ERROR;
     }
-    if (node_counter < 0){
-        return CYCLE_IN_TREE;
-    }
 
-    int node_serial_number = node_counter;
-    writeNode(dump_dot, node, attrs, node_serial_number);
+    writeNode(dump_dot, node, attrs);
     if (node->left){
-        writeEdge(dump_dot, attrs, node_serial_number, "");
+        writeEdge(dump_dot, attrs, (long long)node->left, "");
         createNodesAndEdges(dump_dot, node->left, attrs);
     }
     if (node->right){
-        writeEdge(dump_dot, attrs, node_serial_number, "");
+        writeEdge(dump_dot, attrs, (long long)node->right, "");
         createNodesAndEdges(dump_dot, node->right, attrs);
     }
 
     return NO_ERROR;
 }
 
-static int writeNode(FILE* dump_dot, Node* node, TreeDumpAttributes* attrs, int node_serial_number){
+static int writeNode(FILE* dump_dot, Node* node, TreeDumpAttributes* attrs){
     assert(node);
     assert(attrs);
     assert(dump_dot);
 
-    fprintf(dump_dot, "\tnode_%d [", node_serial_number);
+    fprintf(dump_dot, "\tnode_%ld [", (int)node);
     fprintf(dump_dot,  "color = \"%s\", ", attrs->node_color);
     fprintf(dump_dot,  "style = \"filled\", ");
     fprintf(dump_dot,  "shape = \"%s\", ", attrs->node_shape);
     fprintf(dump_dot,  "fillcolor = \"%s\", ", attrs->node_fillcolor);
     printLabel(dump_dot, node);
-    fprintf(dump_dot,   " | {<fl%d> %p | <fr%d> %p}}\"]\n", node_serial_number, node->left, node_serial_number, node->right);
+    fprintf(dump_dot,   " | {<fl%d> %p | <fr%d> %p}}\"]\n", (long long)node, node->left, (long long)node, node->right);
 
     return NO_ERROR;
 }
