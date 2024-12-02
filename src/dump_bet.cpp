@@ -106,19 +106,19 @@ static int printLabel(FILE* dump_dot, Node* node){
     switch(node->type){
         case(OPER):{
             printOperLabel(dump_dot, node);
-            break;
+            return NO_ERROR;
         }
         case(VAR):{
             fprintf(dump_dot, "label = \"{%c ", node->value.variable);
-            break;
+            return NO_ERROR;
         }
         case(NUM):{
             fprintf(dump_dot, "label = \"{%lg ", node->value.number);
-            break;
+            return NO_ERROR;
         }
     }
 
-    return NO_ERROR;
+    return UNKNOWN;
 }
 
 static int printOperLabel(FILE* dump_dot, Node* node){
@@ -149,6 +149,9 @@ static int printOperLabel(FILE* dump_dot, Node* node){
         }
         case(COT):{
             fprintf(dump_dot, "label = \"{ cot "); break;
+        }
+        case(UNKNOWN):{
+            break;
         }
     }
 
