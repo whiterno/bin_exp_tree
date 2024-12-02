@@ -12,7 +12,7 @@ static const char* enumToString(int error);
 static int createDotFile(Node* root);
 static int createNodesAndEdges(FILE* dump_dot, Node* node, TreeDumpAttributes* attrs);
 static int writeNode(FILE* dump_dot, Node* node, TreeDumpAttributes* attrs);
-static int writeEdge(FILE* dump_dot, TreeDumpAttributes* attrs, int node_serial_number, const char label[]);
+static int writeEdge(FILE* dump_dot, TreeDumpAttributes* attrs, long long node, Node* parent, const char label[]);
 
 static int printLabel(FILE* dump_dot, Node* node);
 static int printOperLabel(FILE* dump_dot, Node* node);
@@ -75,11 +75,11 @@ static int createNodesAndEdges(FILE* dump_dot, Node* node, TreeDumpAttributes* a
 
     writeNode(dump_dot, node, attrs);
     if (node->left){
-        writeEdge(dump_dot, attrs, (long long)node->left, "");
+        writeEdge(dump_dot, attrs, (long long)node->left, node, "");
         createNodesAndEdges(dump_dot, node->left, attrs);
     }
     if (node->right){
-        writeEdge(dump_dot, attrs, (long long)node->right, "");
+        writeEdge(dump_dot, attrs, (long long)node->right, node, "");
         createNodesAndEdges(dump_dot, node->right, attrs);
     }
 
@@ -91,13 +91,13 @@ static int writeNode(FILE* dump_dot, Node* node, TreeDumpAttributes* attrs){
     assert(attrs);
     assert(dump_dot);
 
-    fprintf(dump_dot, "\tnode_%ld [", (int)node);
+    fprintf(dump_dot, "\tnode_%lld [", (long long)node);
     fprintf(dump_dot,  "color = \"%s\", ", attrs->node_color);
     fprintf(dump_dot,  "style = \"filled\", ");
     fprintf(dump_dot,  "shape = \"%s\", ", attrs->node_shape);
     fprintf(dump_dot,  "fillcolor = \"%s\", ", attrs->node_fillcolor);
     printLabel(dump_dot, node);
-    fprintf(dump_dot,   " | {<fl%d> %p | <fr%d> %p}}\"]\n", (long long)node, node->left, (long long)node, node->right);
+    fprintf(dump_dot,   " | {<fl%lld> %p | <fr%lld> %p}}\"]\n", (long long)node, node->left, (long long)node, node->right);
 
     return NO_ERROR;
 }
@@ -163,12 +163,12 @@ static int printVarLabel(FILE* dump_dot, Node* node){
     return NO_ERROR;
 }
 
-static int writeEdge(FILE* dump_dot, TreeDumpAttributes* attrs, int node_serial_number, const char label[]){
+static int writeEdge(FILE* dump_dot, TreeDumpAttributes* attrs, long long node, Node* parent, const char label[]){
     assert(dump_dot);
     assert(attrs);
     assert(label);
 
-    fprintf(dump_dot, "\tnode_%d: <fl%d> -> node_%d [", node_serial_number, node_serial_number, --node_counter);
+    fprintf(dump_dot, "\tnode_%lld: <fl%lld> -> node_%lld [", (long long)parent, (long long)parent, node);
     fprintf(dump_dot,  "color = \"%s\", ", attrs->edge_color);
     fprintf(dump_dot,  "arrowhead = \"%s\", ", attrs->edge_arrowhead);
     fprintf(dump_dot,  "label = \"%s\"]\n", label);
