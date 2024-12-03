@@ -91,7 +91,7 @@ int binExpTreeDtor(BinExpTree** tree){
     return NO_ERROR;
 }
 
-static int nodesDtor(Node* node){
+int nodesDtor(Node* node){
     if (node == NULL) return NO_ERROR;
 
     if (node->left ==  NULL){

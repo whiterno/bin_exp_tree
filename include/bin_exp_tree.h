@@ -62,5 +62,6 @@ int binExpTreeCtor(BinExpTree** tree INIT_ARGS_BET);
 Node* createNode(Node* left, Node* right, DataType data_type, NodeValue value);
 int countNodes(Node* node, int* amount);
 int binExpTreeDtor(BinExpTree** tree);
+int nodesDtor(Node* node);
 
 #endif
