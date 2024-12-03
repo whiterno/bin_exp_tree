@@ -10,8 +10,6 @@ static Node* createVarNode(Node* left, Node* right, char var);
 static Node* createNumNode(Node* left, Node* right, double num);
 static Node* createOperNode(Node* left, Node* right, Operations operation_type);
 
-static int nodesDtor(Node* node);
-
 int binExpTreeCtor(BinExpTree** tree INIT_ARGS_BET){
     assert(tree);
 
