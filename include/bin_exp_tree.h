@@ -18,6 +18,8 @@ enum Operations{
     MULT,
     DIV,
     POW,
+    LN,
+    EXP,
     SIN,
     COS,
     TAN,
