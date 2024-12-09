@@ -19,6 +19,7 @@ enum Operations{
     DIV,
     POW,
     LN,
+    LOG,
     EXP,
     SIN,
     COS,
