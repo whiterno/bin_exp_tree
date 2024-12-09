@@ -150,6 +150,15 @@ static int printOperLabel(FILE* dump_dot, Node* node){
         case(COT):{
             fprintf(dump_dot, "label = \"{ cot "); break;
         }
+        case(LOG):{
+            fprintf(dump_dot, "label = \"{ log "); break;
+        }
+        case(LN):{
+            fprintf(dump_dot, "label = \"{ ln "); break;
+        }
+        case(EXP):{
+            fprintf(dump_dot, "label = \"{ exp "); break;
+        }
         case(UNKNOWN):{
             break;
         }
