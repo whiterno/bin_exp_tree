@@ -14,7 +14,7 @@ static int createNodesAndEdges(FILE* dump_dot, Node* node, TreeDumpAttributes* a
 static int writeNode(FILE* dump_dot, Node* node, TreeDumpAttributes* attrs);
 static int writeEdge(FILE* dump_dot, TreeDumpAttributes* attrs, long long node, Node* parent, const char label[]);
 
-static int printLabel(FILE* dump_dot, Node* node);
+static int printLabelColor(FILE* dump_dot, Node* node);
 static int printOperLabel(FILE* dump_dot, Node* node);
 
 int binExpTreeDump(BinExpTree* tree, const char filename[], const char funcname[], const size_t line, int error){
@@ -95,24 +95,25 @@ static int writeNode(FILE* dump_dot, Node* node, TreeDumpAttributes* attrs){
     fprintf(dump_dot,  "color = \"%s\", ", attrs->node_color);
     fprintf(dump_dot,  "style = \"filled\", ");
     fprintf(dump_dot,  "shape = \"%s\", ", attrs->node_shape);
-    fprintf(dump_dot,  "fillcolor = \"%s\", ", attrs->node_fillcolor);
-    printLabel(dump_dot, node);
+    printLabelColor(dump_dot, node);
     fprintf(dump_dot,   " | {<fl%lld> %p | <fr%lld> %p}}\"]\n", (long long)node, node->left, (long long)node, node->right);
 
     return NO_ERROR;
 }
 
-static int printLabel(FILE* dump_dot, Node* node){
+static int printLabelColor(FILE* dump_dot, Node* node){
     switch(node->type){
         case(OPER):{
             printOperLabel(dump_dot, node);
             return NO_ERROR;
         }
         case(VAR):{
+            fprintf(dump_dot, "fillcolor = #FFFFE0 ");
             fprintf(dump_dot, "label = \"{%c ", node->value.variable);
             return NO_ERROR;
         }
         case(NUM):{
+            fprintf(dump_dot, "fillcolor = #B0E0E6 ");
             fprintf(dump_dot, "label = \"{%lg ", node->value.number);
             return NO_ERROR;
         }
@@ -122,6 +123,7 @@ static int printLabel(FILE* dump_dot, Node* node){
 }
 
 static int printOperLabel(FILE* dump_dot, Node* node){
+    fprintf(dump_dot, "fillcolor = #98FB98 ");
     switch(node->value.operation_type){
         case(ADD):{
             fprintf(dump_dot, "label = \"{ + "); break;
