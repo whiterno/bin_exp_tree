@@ -108,12 +108,12 @@ static int printLabelColor(FILE* dump_dot, Node* node){
             return NO_ERROR;
         }
         case(VAR):{
-            fprintf(dump_dot, "fillcolor = #FFFFE0 ");
+            fprintf(dump_dot, "fillcolor = \"#FFFFE0\" ");
             fprintf(dump_dot, "label = \"{%c ", node->value.variable);
             return NO_ERROR;
         }
         case(NUM):{
-            fprintf(dump_dot, "fillcolor = #B0E0E6 ");
+            fprintf(dump_dot, "fillcolor = \"#B0E0E6\" ");
             fprintf(dump_dot, "label = \"{%lg ", node->value.number);
             return NO_ERROR;
         }
@@ -123,7 +123,7 @@ static int printLabelColor(FILE* dump_dot, Node* node){
 }
 
 static int printOperLabel(FILE* dump_dot, Node* node){
-    fprintf(dump_dot, "fillcolor = #98FB98 ");
+    fprintf(dump_dot, "fillcolor = \"#98FB9\" ");
     switch(node->value.operation_type){
         case(ADD):{
             fprintf(dump_dot, "label = \"{ + "); break;
