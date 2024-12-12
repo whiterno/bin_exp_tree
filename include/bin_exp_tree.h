@@ -25,7 +25,7 @@ enum Operations{
     COS,
     TAN,
     COT,
-    UNKNOWN,
+    UNKNOWN_OPERATION,
 };
 
 union NodeValue{

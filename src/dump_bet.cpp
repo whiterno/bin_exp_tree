@@ -119,7 +119,7 @@ static int printLabelColor(FILE* dump_dot, Node* node){
         }
     }
 
-    return UNKNOWN;
+    return UNKNOWN_OPERATION;
 }
 
 static int printOperLabel(FILE* dump_dot, Node* node){
@@ -161,7 +161,7 @@ static int printOperLabel(FILE* dump_dot, Node* node){
         case(EXP):{
             fprintf(dump_dot, "label = \"{ exp "); break;
         }
-        case(UNKNOWN):{
+        case(UNKNOWN_OPERATION):{
             break;
         }
     }
